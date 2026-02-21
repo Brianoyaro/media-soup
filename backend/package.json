@@ -1,0 +1,22 @@
+{
+  "name": "mediasoup-backend",
+  "version": "1.0.0",
+  "description": "MediaSoup WebRTC Backend Server",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "keywords": ["mediasoup", "webrtc", "express", "socket.io"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mediasoup": "^3.19.17",
+    "socket.io": "^4.8.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}
