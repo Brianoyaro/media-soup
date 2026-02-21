@@ -4,9 +4,11 @@ import JoinScreen from './components/JoinScreen'
 import Controls from './components/Controls'
 import ParticipantView from './components/ParticipantView'
 
-const SOCKET_SERVER = import.meta.env.PROD 
-  ? 'https://media-soup-oceq.onrender.com' 
-  : 'http://localhost:3001'
+const SOCKET_SERVER = import.meta.env.VITE_SOCKET_SERVER || (
+  import.meta.env.PROD 
+    ? 'https://media-soup-oceq.onrender.com' 
+    : 'http://localhost:3001'
+)
 
 function App() {
   const [isJoined, setIsJoined] = useState(false)
