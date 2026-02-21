@@ -32,12 +32,25 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Create WebRTC Transport helper
-const ANNOUNCED_IP = process.env.ANNOUNCED_IP || '127.0.0.1';
+// Get public IP for WebRTC (auto-detect on Render)
+let announcedIp = process.env.ANNOUNCED_IP || '127.0.0.1';
 
+const getPublicIp = async () => {
+  if (announcedIp !== 'auto') return;
+  try {
+    const response = await fetch('https://api.ipify.org');
+    announcedIp = await response.text();
+    console.log('Auto-detected public IP:', announcedIp);
+  } catch (err) {
+    console.error('Failed to get public IP, using 127.0.0.1:', err.message);
+    announcedIp = '127.0.0.1';
+  }
+};
+
+// Create WebRTC Transport helper
 const createWebRtcTransport = async (router) => {
   const transport = await router.createWebRtcTransport({
-    listenIps: [{ ip: '0.0.0.0', announcedIp: ANNOUNCED_IP }],
+    listenIps: [{ ip: '0.0.0.0', announcedIp }],
     enableUdp: true,
     enableTcp: true,
     preferUdp: true,
@@ -62,6 +75,7 @@ const peers = new Map();
 
 // Initialize MediaSoup Worker and Router
 (async () => {
+  await getPublicIp();
   await createWorker();
   console.log('MediaSoup worker and router created');
 })();
